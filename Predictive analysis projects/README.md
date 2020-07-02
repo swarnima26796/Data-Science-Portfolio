@@ -8,5 +8,5 @@ Predictive analysis projects includes-
 #### You can find the full project report [here.](https://drive.google.com/file/d/1r4kNTCJh9OTVS4lPbJEt5s262uGLRPLD/view?usp=sharing)
 
 ## COVID19 prediction using LSTM
-#### Before doing this project using ARIMA, I have tried the same project using LSTM but since the data was less it didn't gave accurate results. But now this project works fine. 
-#### You can find the brief project synopsis [here.]()
+#### Before doing this project using ARIMA, I have tried the same project using LSTM but since the data was less it didn't gave accurate results. So, I tried the same usecase using ARIMA model and it gave me more accurate results.
+#### You can find the brief project synopsis [here.](https://drive.google.com/file/d/1zEjAUOccMnfSNSEpS3akglY95FdGhP-D/view?usp=sharing)
