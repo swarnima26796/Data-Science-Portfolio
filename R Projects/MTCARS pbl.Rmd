@@ -1,0 +1,113 @@
+---
+title: "mtcars"
+author: "swarnima"
+date: "10/06/2020"
+output:
+  
+  pdf_document: default
+  html_document: default
+---
+---
+Executive summary
+I have used the MTcars data set, which has data on the design, performance and fuel economy for 32 automobiles from 1973 - 1974. All of the data therein was extracted from the 1974 Motor Trend US magazine.This exploratory analysis and Regression modelling will be useful as it will delve into the various factors which may have some sort of influence on fuel economy (miles per gallon). The variables I have chosen to compare to the MPG are horsepower, and number of cylinders. I hypothesize that these variables will have a strong relationship to a cars fuel economy. Then I have built regression model in order to test my hypothesis. The results are presented through T-test, Plots and ANOVA table. My hope is that the analysis will provide findings that will identify which components of cars are the biggest perpetrators in minimizing fuel economy.
+---
+
+
+library(knitr)
+library(printr)
+kable(head(mtcars,10),align='c')
+
+---
+Exploratory data analyses
+---
+library(GGally)
+library(ggplot2)
+
+ggplot(mtcars, aes(mpg)) +
+  geom_histogram(binwidth = 4) + xlab('Miles per Gallon') + ylab('Number of Cars') + 
+  ggtitle('Distribution of Cars by Mileage')
+
+ggplot(mtcars, aes(cyl)) +
+  geom_histogram(binwidth=1) + xlab('Cylinders') + ylab('Number of Cars') +
+  ggtitle('Distribution of Cars by Cylinders')
+
+ggplot(mtcars, aes(hp)) +
+  geom_histogram(binwidth=20) + xlab('horsepower') + ylab('Number of Cars') +
+  ggtitle('Distribution of Cars by Horsepower')
+
+ggplot(mtcars, aes(hp, mpg)) + geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  ylab("Miles per Gallon") +
+  xlab("No. of Horsepower") +
+  ggtitle("Impact of Number of Horsepower on MPG")
+
+ggpairs(mtcars,lower=list(continuous="smooth",wrap=c(method="loess",colour="blue")), diag=list(continuous="bar",wrap=c(colour="blue")),upper=list(wrap=list(corSize=15)),axisLabels='show')
+
+library(stats)
+ggplot(mtcars, aes(y=mpg, x=factor(am, labels = c("automatic", "manual")), fill=factor(am)))+
+        geom_violin(colour="black", size=1)+
+        xlab("transmission") + ylab("MPG")
+
+---
+Model fitting and hypothesis testing
+---
+
+Two sample t-test
+---
+
+test <- t.test(mpg ~ am, data= mtcars, var.equal = FALSE, paired=FALSE ,conf.level = .95)
+
+result <- data.frame( "t-statistic"  = test$statistic, 
+                       "df" = test$parameter,
+                        "p-value"  = test$p.value,
+                        "lower CL" = test$conf.int[1],
+                        "upper CL" = test$conf.int[2],
+                        "automatic mean" = test$estimate[1],
+                        "manual mean" = test$estimate[2],
+                        row.names = "")
+ 
+kable(x = round(result,3),align = 'c')                       
+
+---
+Simple Linear Regression Model
+---
+mtcars$amfactor
+mtcars$amfactor <- factor(mtcars$am, labels=c("automatic","manual"))
+summary(lm(mpg ~ factor(amfactor), data = mtcars))$coef
+
+summary(lm(mpg ~ cyl+disp+hp+drat+wt+qsec+factor(vs)+factor(am)+gear+carb, data = mtcars))$coef
+
+library(car)
+fitvif <- lm(mpg ~ cyl+disp+hp+drat+wt+qsec+factor(vs)+factor(am)+gear+carb, data = mtcars)
+kable(vif(fitvif),align = 'c')
+
+library(MASS)
+fit <- lm(mpg ~ cyl+disp+hp+drat+wt+qsec+factor(vs)+factor(am)+gear+carb, data = mtcars)
+step <- stepAIC(fit, direction="both", trace=FALSE)
+summary(step)$coeff
+
+summary(step)$r.squared
+
+---
+ANOVA TABLE
+---
+fit1 <- lm(mpg ~ factor(am), data = mtcars)
+fit2 <- lm(mpg ~ factor(am)+wt, data = mtcars)
+fit3 <- lm(mpg ~ factor(am)+wt+qsec, data = mtcars)
+fit4 <- lm(mpg ~ factor(am)+wt+qsec+hp, data = mtcars)
+fit5 <- lm(mpg ~ factor(am)+wt+qsec+hp+drat, data = mtcars)
+anova(fit1, fit2, fit3, fit4, fit5)
+
+finalfit <- lm(mpg ~ wt+qsec+factor(am), data = mtcars)
+summary(finalfit)$coef
+
+---
+Regression Diagnostics
+---
+fitvif <- lm(mpg ~ wt+qsec+factor(am), data = mtcars)
+kable(vif(fitvif),align = 'c')
+
+qqPlot(finalfit, main="Normal Q-Q plot")
+
+
+
