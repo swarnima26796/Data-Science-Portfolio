@@ -1,0 +1,135 @@
+Regression Modelling and Analysis on MTCARS using R
+
+ABSTRACT
+As climate change becomes an ever more real threat to the Earth in the minds of leaders across the world, many governments are taking action to mitigate greenhouse gas emissions. The automobile industry in particular is targeted for regulations and in many instances fuel economy standards are set in place for car manufacturers to meet. If manufacturers continue to produce cars with poor gas mileage in spite of the standard, they are often made to pay a tax. In order to meet these standards and avoid excess taxation, engineers and businesses must come up with creative solutions so as to reduce fuel consumption without compromising on performance. Since this issue is so relevant to today’s engineering challenges and protecting the environment, I have decided to analyse data in order to explore which avenues may be considered by engineering teams when attempting to meet fuel economy standards. To do this, I have used the MTcars data set, which has data on the design, performance and fuel economy for 32 automobiles from 1973 - 1974. All of the data therein was extracted from the 1974 Motor Trend US magazine.
+PROPOSED MODEL
+This exploratory analysis and Regression modelling will be useful as it will delve into the various factors which may have some sort of influence on fuel economy (miles per gallon). The variables I have chosen to compare to the MPG are horsepower, and number of cylinders. I hypothesize that these variables will have a strong relationship to a cars fuel economy. Then I have built regression model in order to test my hypothesis. The results are presented through T-test, Plots and ANOVA table. My hope is that the analysis will provide findings that will identify which components of cars are the biggest perpetrators in minimizing fuel economy.
+
+METHODOLOGY:
+This analysis is performed for the Motor Trend, a magazine about the automobile industry. By looking at a data set of a collection of cars, I am interested in exploring the relationship between a set of variables and miles per gallon (MPG) as outcome. I am particularly interested to explore:
+o	“Is an automatic or manual transmission better for MPG”
+o	“Quantify the MPG difference between automatic and manual transmissions”
+In order to answer these questions I performed exploratory data analysis, and used hypothesis testing and linear regression as methodologies to make inference. I established both simple and multivariate linear regression analysis. However the result of the multivariable regression model is more promising as it includes the potential effect of other variables on MPG.
+Using model selection strategy, we found out that among all variables weight and quarter mile time (acceleration) have significant impact in quantifying the difference of MPG between automatic and manual transmission cars.
+
+STEP1: Exploring the dataset and analysing the parameters
+	data(mtcars)
+	str(mtcars)
+	names(mtcars)
+	head(mtcars)
+	tail(mtcars)
+	summary(mtcars)
+
+ 
+ 
+                   
+To get a feel for the distribution of some of the data to be analyzed, we plot some histograms, the first against mpg, the second against the number of cylinders, and the third, hp.
+	library(ggplot2)
+	ggplot(mtcars, aes(mpg)) +   geom_histogram(binwidth = 4) + xlab('Miles per Gallon') + ylab('Number of Cars') +   ggtitle('Distribution of Cars by Mileage')
+ 
+	ggplot(mtcars, aes(cyl)) +   geom_histogram(binwidth=1) + xlab('Cylinders') + ylab('Number of Cars') +   ggtitle('Distribution of Cars by Cylinders')
+
+ 
+	ggplot(mtcars, aes(hp)) +   geom_histogram(binwidth=20) + xlab('horsepower') + ylab('Number of Cars') +   ggtitle('Distribution of Cars by Horsepower')
+
+
+ 
+
+Linear Regression Line HP vs MPG
+ 
+STEP2: Exploratory Data Analysis
+Below is a brief description of the variables in the data set:
+ 
+ 
+Notice that each line of mtcars represents one model of car, which we can see in the row names. Each column is then one attribute of that car, such as the miles per gallon (or fuel efficiency), the number of cylinders, the displacement (or volume) of the car’s engine in cubic inches, whether the car has an automatic or manual transmission, and so on.
+Here, I have done the analysis by performing some initial exploratory data analysis to get a better idea of the existing patterns between variables in the data set. Normally in regression analysis scatter plot is a very effective tool. Below we create a nice pairwise scatter plots. This is a nice way to investigate the relationship between all the variables in this data set.
+
+
+library(GGally)
+library(ggplot2)
+
+ggpairs(mtcars, 
+        lower = list(continuous = "smooth",wrap = c(method = "loess", colour="black")),
+        diag=list(continuous="bar", wrap=c(colour="black")),
+        upper=list(wrap=list(corSize=15)), 
+        axisLabels='show')
+
+Output:  
+It is also worthwhile check how MPG varies by automatic versus manual transmission. For that purpose we create a Violin plot of MPG by automatic and manual transmissions. In our dataset 0 represents an automatic transmission and 1 means a manual transmission.
+library(stats) 
+ggplot(mtcars, aes(y=mpg, x=factor(am, labels = c("automatic", "manual")), fill=factor(am)))+
+        geom_violin(colour="black", size=1)+
+        xlab("transmission") + ylab("MPG")
+ 
+We can form a clear hypothesis from this visualization: it appears that automatic cars have a lower miles per gallon, and therefore a lower fuel efficiency, than manual cars do. But it is possible that this apparent pattern happened by random chance- that is, that we just happened to pick a group of automatic cars with low efficiency and a group of manual cars with higher efficiency. So to check whether that’s the case, we have to use a statistical test.
+STEP3: Model Fitting and Hypothesis Testing
+1.	Two Sample T-test
+We are interested to know if an automatic or manual transmission better for MPG. So first we test the hypothesis that cars with an automatic transmission use more fuel than cars with a manual transmission. To compare two samples to see if they have different means, we use two sample T-test.
+test <- t.test(mpg ~ am, data= mtcars, var.equal = FALSE, paired=FALSE ,conf.level = .95)
+result <- data.frame( "t-statistic"  = test$statistic, "df" = test$parameter,
+"p-value" = test$p.value,"lower CL" = test$conf.int[1],"upper CL" = test$conf.int[2],"automatic mean" = test$estimate[1],"manual mean" = test$estimate[2],row.names = "")
+kable(x = round(result,3),align = 'c')
+Output:
+ 
+Observation from the test: p-value that shows the probability that this apparent difference between the two groups could appear by chance is very low. The confidence interval also describes how much lower the miles per gallon is in manual cars than it is in automatic cars. We can be confident that the true difference is between 3.2 and 11.3.
+2.	Simple Linear Regression Model
+Factor variable in this case is Transmission (am).
+ 
+All the estimates here above are in comparison with automatic transmission. The intercept of 17.14 is simply the mean MPG of automatic transmission. The slope of 7.24 is the change in the mean between manual transmission and automatic transmission. You can verify that from the plot as well. The p-value of 0.000285 for the mean MPG difference between manual and automatic transmission is significant. Therefore we conclude that according to this model manual transmission if more fuel efficient.
+3.	Fitting Mutivariable Linear Regression Model
+Modeling based on only one predictor variable does not seem to be sufficient and good enough as we have other predictor variables that might affect MPG and therefore affect the difference in MPG by transmission. So the univariate model in this case is only part of the picture. Therefore in this part of the analysis we use multivariable linear regression to develop a model that includes the effect of other variables.
+	Model Selection Procedure
+We want to know what combination of predictors will best predict fuel efficiency. Which predictors increase our accuracy by a statistically significant amount? We might be able to guess at the some of the trends from the graph, but really we want to perform a statistical test to determine which predictors are significant, and to determine the ideal formula for prediction.
+ 
+	Detecting collinearity
+A major problem with multivariate regression is collinearity. If two or more predictor variables are highly correlated, and they are both entered into a regression model, it increases the true standard error and you get a very unstable estimates of the slope. We can assess the collinearity by variance inflation factor (VIF). Let us look at the variance inflation factors if we throw all the variables into the model.
+       		 
+Values for the VIF that are greater than 10 are considered large. We should also pay attention to VIF values between 5 and 10. At these point we might consider leaving only one of these variables in the model.
+
+	Stepwise Selection Method
+Among available methods we decided to perform stepwise selection to help us select a subset of variables that best explain the MPG. Please note that we also treat the vc variable as a categorical variable.
+ 
+ 
+This shows that in addition to transmission, weight of the vehicle as well as acceleration speed have the highest relation to explaining the variation in mpg. The adjusted R^2 is 84% which means that the model explains 84% of the variation in mpg indicating it is a robust and highly predictive model.
+	Nested Likelihood Ratio Method & ANOVA Table
+So in order to verify the result of the stepwise selection model, we also perform this procedure below.
+ 
+As you can see, the result is consistent with stepwise selection model and adding any more variable in addition to wt, am and qsec will dramatically increase the variation in the model, and the p-value immediately becomes insignificant.
+
+	Fitting the final method
+Now using the selected variables, we can fit the final model.
+ 
+This model explains 84% of the variance in miles per gallon (mpg). Now when we read the coefficient for am, we say that, on average, manual transmission cars have 2.94 MPGs more than automatic transmission cars.
+STEP4: Regression Diagnostics and Output Visualization
+In this step, we perform some diagnostics on the final regression model.
+This time looking at variance inflation factors reveal that the numbers are reasonable and we don’t detect any sign of collinearity.
+ 
+The normal Q-Q plot, is we are trying to figure out the normality of the errors by plotting the theoretical quantiles of the standard normal distribution by the standardized residuals.
+ 
+
+CONCLUSION:
+In this project I have used linear regression as well as multivariate regression to find out all the depending factors for the variation in mpg of mtcars. In linear regression we did analysis using automatic and manual transmission factor. Whereas, in Multivariate regression we tried adding various other parameters from the dataset to analyze their significance with respect to the variation of mpg. So we found that weight of the vehicle as well as acceleration speed have the highest relation to explaining the variation in mpg. Though we tried adding more factors but it dramatically increased the variation in the model, and the p-value immediately became insignificant. Therefore, this analysis have been successful in determining the factors that should be considered by engineering teams while attempting to meet fuel economy standards.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
