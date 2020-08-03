@@ -5,3 +5,4 @@
     - It includes some cool exploratory data analysis that brings out some important insights for further predictive modelling.
     - You can find EDA notebook [here.](https://github.com/swarnima26796/Data-Science-Portfolio/blob/master/EDA%20projects/SuperMarketSales%20EDA/EDA.ipynb)
     - Initial dataset is [here.](https://github.com/swarnima26796/Data-Science-Portfolio/blob/master/EDA%20projects/SuperMarketSales%20EDA/train.csv)
+    - It's forecasting model is found [here.](https://github.com/swarnima26796/Data-Science-Portfolio/tree/master/Predictive%20analysis%20projects/SuperMarketSales%20Forecasting)
