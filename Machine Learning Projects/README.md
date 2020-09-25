@@ -8,4 +8,7 @@
 * <b>A Simple Classification Task- Fruit Classification</b>
     - It uses KNN to classify fruits into 4 categories- apple, lemon, mandarin and oranges.
     - Find the notebook and the dataset [here.](https://github.com/swarnima26796/Data-Science-Portfolio/tree/master/Machine%20Learning%20Projects/Fruit%20Classification%20using%20KNN)
+* <b>Breast Cancer Prediction using KNN</b>
+    - It uses KNN to predict breast cancer into 2 categories- malignant and beingn.
+    - Find the notebook [here.]()
 
