@@ -16,6 +16,7 @@ This repository includes my hands-on works on data cleaning, EDA, machine learni
     - [K-Means & Hierarchical Clustering on Online Retails Data](https://github.com/swarnima26796/Data-Science-Portfolio/blob/master/Machine%20Learning%20Projects/K-Means%20%26%20Hierarchical%20Clustering%20on%20Online%20Retails%20Data.ipynb)
     - [Resume ranking](https://github.com/swarnima26796/Data-Science-Portfolio/blob/master/Machine%20Learning%20Projects/Resume%20Ranking.ipynb)
     - [Fruit Classification (Beginner)](https://github.com/swarnima26796/Data-Science-Portfolio/tree/master/Machine%20Learning%20Projects/Fruit%20Classification%20using%20KNN)
+    - [Breast Cancer Prediction (Beginner)](https://github.com/swarnima26796/Data-Science-Portfolio/blob/master/Machine%20Learning%20Projects/Breast%20Cancer%20prediction.ipynb)
 * <b>Deep Learning Projects</b>
     - [MNIST Digit Classification using Tensorflow](https://github.com/swarnima26796/Data-Science-Portfolio/blob/master/Deep%20Learning%20Projects/MNIST%20Digit%20Classification%20using%20Tensorflow.ipynb)
 * <b>Data Cleaning Projects</b>
