@@ -35,7 +35,7 @@ ipython-genutils==0.2.0
 isort==4.3.21
 itsdangerous==1.1.0
 jedi==0.15.2
-Jinja2==2.11.2
+Jinja2==2.11.3
 joblib==0.16.0
 jsonify==0.5
 jsonschema @ file:///C:/ci/jsonschema_1594363671836/work
