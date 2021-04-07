@@ -19,7 +19,7 @@ This repository includes my hands-on works on data cleaning, EDA, machine learni
     - [Breast Cancer Prediction (Beginner)](https://github.com/swarnima26796/Data-Science-Portfolio/blob/master/Machine%20Learning%20Projects/Breast%20Cancer%20prediction.ipynb)
 * <b>Deep Learning Projects</b>
     - [MNIST Digit Classification using Tensorflow](https://github.com/swarnima26796/Data-Science-Portfolio/blob/master/Deep%20Learning%20Projects/MNIST%20Digit%20Classification%20using%20Tensorflow.ipynb)
-* <b>Data Cleaning Projects</b>
 * <b> Python Projects</b>
+    - [2048 Game](https://github.com/swarnima26796/Data-Science-Portfolio/tree/master/Python%20Projects/2048%20Game%20project)
 
-# PORTFOLIO IS UNDER BUILDING PROCESS ;)
+
