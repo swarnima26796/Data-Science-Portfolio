@@ -53,7 +53,7 @@ mkl-random==1.1.1
 mkl-service==2.3.0
 nbconvert @ file:///C:/ci/nbconvert_1594372737468/work
 nbformat==5.0.7
-notebook==6.0.3
+notebook==6.4.12
 numpy==1.18.5
 numpydoc @ file:///tmp/build/80754af9/numpydoc_1594166760263/work
 packaging==20.4
